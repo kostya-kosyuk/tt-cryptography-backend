@@ -10,3 +10,7 @@ node_modules
 
 #build
 dist
+
+#configs
+db.config.ts
+jwt.config.ts

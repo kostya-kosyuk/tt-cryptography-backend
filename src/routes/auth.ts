@@ -15,6 +15,9 @@ authRouter.post('/registration', [
         .notEmpty().withMessage('Password is required')
         .isLength({ min: 6, max: 32 }).withMessage('Password must be between 8 and 32 characters'),
 ], registration);
-authRouter.post('/login', login);
+authRouter.post('/login', [
+    check('login')
+        .notEmpty().withMessage('Email or Login is required'),
+], login);
 
 export default authRouter;

@@ -1,7 +1,11 @@
 import { Sequelize } from 'sequelize';
+import { dbConfig } from '../../db.config';
 
-export const sequelize = new Sequelize('test', 'postgres', 'admin', {
-    host: 'localhost',
-    dialect: 'postgres',
-    port: 5432
-});
+const {database, username, password, options} = dbConfig;
+
+export const sequelize = new Sequelize(
+    database,
+    username,
+    password,
+    options,
+);

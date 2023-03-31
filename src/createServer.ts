@@ -1,7 +1,7 @@
 import express from 'express';
 
 import authRouter from './routes/auth'
-import User from './models/user';
+import messageRouter from './routes/message'
 
 export default function createServer() {
     const app = express();
@@ -9,6 +9,7 @@ export default function createServer() {
     app.use(express.json());
 
     app.use('/auth', authRouter);
+    app.use('/message', messageRouter);
 
     return app;
 }
