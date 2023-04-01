@@ -58,7 +58,28 @@ export const login = async (req, res) => {
 
         const token = generateToken(user['id']);
 
-        res.status(200).json(token);
+        res.cookie('token', token, {
+            httpOnly: true,
+            sameSite: 'strict',
+            maxAge: 36000 * 1000,
+        });
+
+        res.cookie('login', user['login'], {
+            maxAge: 36000 * 1000,
+        })
+
+        res.status(200).json('Login successful');
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+};
+
+export const logout = (req, res) => {
+    try {
+        res.clearCookie('token', 'login');
+        res.status(200).json('Successfully logged out');
+
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: 'Server error' });

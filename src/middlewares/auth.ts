@@ -1,9 +1,10 @@
 import { verify } from "jsonwebtoken";
 import { secretKey } from "../../jwt.config";
+import cookieParser from "cookie-parser";
 
 export const authMiddleware = (req, res, next) => {
     try {
-        const token = req.get('Authorization').split(' ')[1];
+        const token = req.cookies.token;
 
         if (!token) {
             return res.status(401).json({ message: "Unauthorized" });
