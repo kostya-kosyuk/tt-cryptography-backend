@@ -21,7 +21,10 @@ export const registration = async (req, res) => {
 
         const hashPassword = await hash(password, 5);
 
-        const user = await User.create({ login, password: hashPassword });
+        const user = await User.create({
+            login,
+            password: hashPassword
+        });
 
         res.status(201).json(user);
     } catch (error) {
@@ -44,7 +47,7 @@ export const login = async (req, res) => {
         const user = await User.findOne({ where: { login }});
 
         if (!user) {
-            return res.status(400).json({ message: 'User not found' });
+            return res.status(404).json({ message: 'User not found' });
         }
 
         const isPasswordValid = await compare(password, user['password']);

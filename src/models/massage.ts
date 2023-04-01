@@ -1,5 +1,6 @@
 import { Model, DataTypes } from "sequelize";
 import { sequelize } from "../utils/db";
+import User from "./user";
 
 export default class Message extends Model { }
 
@@ -14,7 +15,7 @@ Message.init(
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: 'users',
+                model: User,
                 key: 'id',
             },
         },
@@ -36,5 +37,6 @@ Message.init(
         modelName: 'Message',
         tableName: 'messages',
         timestamps: true,
+        underscored: true,
     }
 );
