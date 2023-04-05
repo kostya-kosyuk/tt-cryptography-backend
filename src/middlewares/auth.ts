@@ -1,6 +1,5 @@
 import { verify } from "jsonwebtoken";
 import { secretKey } from "../../jwt.config";
-import cookieParser from "cookie-parser";
 
 export const authMiddleware = (req, res, next) => {
     try {

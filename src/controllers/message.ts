@@ -75,7 +75,7 @@ export const patchMessage = async (req, res) => {
 
         await foundMessage.save();
 
-        res.status(200).json({ foundMessage });
+        res.status(200).json({ updatedMessage: foundMessage });
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: 'Server error' });

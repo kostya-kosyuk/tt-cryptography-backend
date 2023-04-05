@@ -7,9 +7,9 @@ const messageRouter = express.Router();
 
 messageRouter.use(authMiddleware);
 
-messageRouter.post('/', messagePostValidationRules(),  createMessage);
-messageRouter.get('/', authMiddleware, getMessage);
-messageRouter.patch('/:id', authMiddleware, messagePatchValidationRules(), patchMessage);
-messageRouter.delete('/:id', authMiddleware, deleteMessage);
+messageRouter.post('/create', messagePostValidationRules(),  createMessage);
+messageRouter.get('/get', authMiddleware, getMessage);
+messageRouter.patch('/update/:id', authMiddleware, messagePatchValidationRules(), patchMessage);
+messageRouter.delete('/delete/:id', authMiddleware, deleteMessage);
 
 export default messageRouter;

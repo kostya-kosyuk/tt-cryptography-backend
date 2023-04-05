@@ -3,6 +3,22 @@ import User from '../models/user';
 import { hash, compare } from 'bcrypt';
 import { generateToken } from '../utils/jwt';
 
+const attachCookies = (id: number, login: string, res) => {
+    const token = generateToken(id);
+
+    res.cookie('token', token, {
+        sameSite: 'none',
+        secure: true,
+        maxAge: 36000 * 1000,
+    });
+
+    res.cookie('login', login, {
+        sameSite: 'none',
+        secure: true,
+        maxAge: 36000 * 1000,
+    })
+}
+
 export const registration = async (req, res) => {
     try {
         const errors = validationResult(req);
@@ -25,6 +41,8 @@ export const registration = async (req, res) => {
             login,
             password: hashPassword
         });
+
+        attachCookies(user['id'], user['login'], res);
 
         res.status(201).json(user);
     } catch (error) {
@@ -56,17 +74,7 @@ export const login = async (req, res) => {
             return res.status(400).json({ message: 'Incorrect password' });
         }
 
-        const token = generateToken(user['id']);
-
-        res.cookie('token', token, {
-            httpOnly: true,
-            sameSite: 'strict',
-            maxAge: 36000 * 1000,
-        });
-
-        res.cookie('login', user['login'], {
-            maxAge: 36000 * 1000,
-        })
+        attachCookies(user['id'], user['login'], res);
 
         res.status(200).json('Login successful');
     } catch (error) {
@@ -77,7 +85,14 @@ export const login = async (req, res) => {
 
 export const logout = (req, res) => {
     try {
-        res.clearCookie('token', 'login');
+        res.clearCookie('token', {
+            sameSite: 'none',
+            secure: true,
+        });
+        res.clearCookie('login', {
+            sameSite: 'none',
+            secure: true,
+        });
         res.status(200).json('Successfully logged out');
 
     } catch (error) {
