@@ -7,16 +7,18 @@ const attachCookies = (id: number, login: string, res) => {
     const token = generateToken(id);
 
     res.cookie('token', token, {
-        sameSite: 'none',
-        secure: true,
+        httpOnly: false,
+        sameSite: 'Lax',
+        secure: false,
         maxAge: 36000 * 1000,
     });
 
     res.cookie('login', login, {
-        sameSite: 'none',
-        secure: true,
+        httpOnly: false,
+        sameSite: 'Lax',
+        secure: false,
         maxAge: 36000 * 1000,
-    })
+    });
 }
 
 export const registration = async (req, res) => {
