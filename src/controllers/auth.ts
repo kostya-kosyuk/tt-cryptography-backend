@@ -13,7 +13,7 @@ const attachCookies = (id: number, login: string, res) => {
         maxAge: 36000 * 1000,
     });
 
-    res.cookie('login', login, {
+    res.cookie('login', encodeURIComponent(login), {
         httpOnly: false,
         sameSite: 'Lax',
         secure: false,
@@ -29,7 +29,8 @@ export const registration = async (req, res) => {
             return res.status(400).json({ message: 'Registration error', errors });
         }
 
-        const { login, password } = req.body;
+        const login = (req.body.login as string).toLocaleLowerCase();
+        const password = req.body.password as string;
 
         const userWithSameLogin = await User.findOne({ where: { login } });
 
@@ -55,14 +56,15 @@ export const registration = async (req, res) => {
 
 export const login = async (req, res) => {
     try {
-        const { login, password } = req.body;
-
-
         const errors = validationResult(req);
 
         if (!errors.isEmpty()) {
             return res.status(400).json({ message: 'Registration error', errors });
         }
+
+        const login = (req.body.login as string).toLocaleLowerCase();
+        const password = req.body.password as string;
+
 
         const user = await User.findOne({ where: { login }});
 
